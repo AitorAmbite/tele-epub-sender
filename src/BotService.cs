@@ -2,6 +2,7 @@ using Microsoft.Extensions.Options;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace TeleEpubSender;
 
@@ -14,16 +15,20 @@ public class BotService(
 
     protected override async Task ExecuteAsync(CancellationToken ct)
     {
-        var bot = new TelegramBotClient(_s.BotToken, cancellationToken: ct);
-        bot.OnMessage += (msg, _) => HandleAsync(bot, msg, ct);
-        bot.OnError += (ex, _) => { log.LogError(ex, "Error de Telegram"); return Task.CompletedTask; };
-
+        var bot = new TelegramBotClient(_s.BotToken);
         log.LogInformation("Bot @{User} escuchando", (await bot.GetMe(ct)).Username);
-        await Task.Delay(Timeout.Infinite, ct);
+
+        await bot.ReceiveAsync(
+            updateHandler: (_, update, token) => HandleAsync(bot, update.Message, token),
+            errorHandler: (_, ex, _) => { log.LogError(ex, "Error de Telegram"); return Task.CompletedTask; },
+            receiverOptions: new ReceiverOptions { AllowedUpdates = [UpdateType.Message] },
+            cancellationToken: ct);
     }
 
-    private async Task HandleAsync(TelegramBotClient bot, Message msg, CancellationToken ct)
+    private async Task HandleAsync(TelegramBotClient bot, Message? msg, CancellationToken ct)
     {
+        if (msg is null) return;
+
         if (msg.Text?.Split('@')[0] == "/id")
         {
             await bot.SendMessage(msg.Chat, $"Tu id: {msg.From?.Id}\nChat id: {msg.Chat.Id}", cancellationToken: ct);

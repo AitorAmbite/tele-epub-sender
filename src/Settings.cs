@@ -3,8 +3,12 @@ namespace TeleEpubSender;
 public record TelegramSettings
 {
     public string BotToken { get; init; } = "";
-    /// <summary>Si está vacío, cualquier chat puede usar el bot.</summary>
-    public long[] AllowedChatIds { get; init; } = [];
+    /// <summary>Ids de usuario permitidos, separados por comas. Vacío = nadie.</summary>
+    public string AllowedUserIds { get; init; } = "";
+
+    public bool IsAllowed(long? userId) =>
+        userId is { } id && AllowedUserIds.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            .Any(a => a == id.ToString());
 }
 
 public record EmailSettings

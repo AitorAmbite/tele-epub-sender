@@ -4,7 +4,7 @@ services:
     restart: unless-stopped
     environment:
       Telegram__BotToken: ${TELEGRAM_BOT_TOKEN:?}
-      Telegram__AllowedChatIds__0: ${TELEGRAM_CHAT_ID:-}
+      Telegram__AllowedUserIds: ${TELEGRAM_ALLOWED_USER_IDS:-}
       Email__To: ${EMAIL_TO:?}
       Email__From: ${EMAIL_FROM:?}
       Email__User: ${EMAIL_USER:?}

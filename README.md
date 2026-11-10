@@ -9,7 +9,7 @@ Bot de Telegram: le envías un `.epub` y lo reenvía por correo a la dirección 
 | Clave | Descripción |
 |---|---|
 | `Telegram:BotToken` | Token de @BotFather |
-| `Telegram:AllowedChatIds` | Chats permitidos (vacío = todos) |
+| `Telegram:AllowedUserIds` | Ids de usuario permitidos, separados por comas (vacío = nadie). Cada usuario obtiene el suyo con `/id` |
 | `Email:To` | Destino (p. ej. tu Kindle) |
 | `Email:From` / `User` / `Password` | Remitente y credenciales SMTP |
 | `Email:SmtpHost` / `SmtpPort` | Servidor SMTP (STARTTLS) |

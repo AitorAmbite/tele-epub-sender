@@ -37,7 +37,11 @@ public class BotService(
 
         var doc = msg.Document;
         if (doc is null) return;
-        if (_s.AllowedChatIds.Length > 0 && !_s.AllowedChatIds.Contains(msg.Chat.Id)) return;
+        if (!_s.IsAllowed(msg.From?.Id))
+        {
+            log.LogWarning("Usuario no autorizado: {Id}", msg.From?.Id);
+            return;
+        }
 
         var name = doc.FileName ?? "";
         if (!name.EndsWith(".epub", StringComparison.OrdinalIgnoreCase))

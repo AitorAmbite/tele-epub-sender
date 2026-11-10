@@ -24,6 +24,12 @@ public class BotService(
 
     private async Task HandleAsync(TelegramBotClient bot, Message msg, CancellationToken ct)
     {
+        if (msg.Text?.Split('@')[0] == "/id")
+        {
+            await bot.SendMessage(msg.Chat, $"Tu id: {msg.From?.Id}\nChat id: {msg.Chat.Id}", cancellationToken: ct);
+            return;
+        }
+
         var doc = msg.Document;
         if (doc is null) return;
         if (_s.AllowedChatIds.Length > 0 && !_s.AllowedChatIds.Contains(msg.Chat.Id)) return;

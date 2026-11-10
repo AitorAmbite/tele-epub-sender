@@ -21,3 +21,11 @@ Mejor no guardar secretos en el fichero: `dotnet user-secrets` o variables de en
 ```
 dotnet run --project src
 ```
+
+## Docker
+
+```
+cp .env.example .env   # rellénalo
+docker compose up -d --build
+docker compose logs -f
+```

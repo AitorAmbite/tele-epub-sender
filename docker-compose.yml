@@ -1,0 +1,13 @@
+services:
+  bot:
+    build: .
+    restart: unless-stopped
+    environment:
+      Telegram__BotToken: ${TELEGRAM_BOT_TOKEN:?}
+      Telegram__AllowedChatIds__0: ${TELEGRAM_CHAT_ID:-}
+      Email__To: ${EMAIL_TO:?}
+      Email__From: ${EMAIL_FROM:?}
+      Email__User: ${EMAIL_USER:?}
+      Email__Password: ${EMAIL_PASSWORD:?}
+      Email__SmtpHost: ${SMTP_HOST:-smtp.gmail.com}
+      Email__SmtpPort: ${SMTP_PORT:-587}
